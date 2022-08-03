@@ -1,0 +1,49 @@
+.table {
+    width: 100%;
+    border-radius: 10px;
+    overflow: auto;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        thead {
+            border: 1px solid var(--primary-color);
+            border-bottom: 0;
+
+            tr {
+                background-color: var(--primary-color);
+
+                th {
+                    padding: 0.5rem 10px;
+                    color: #fff;
+                    white-space: nowrap;
+                    letter-spacing: 2px;
+                }
+            }
+        }
+
+        tbody {
+            border: 1px solid #eee;
+            border-top: 0;
+
+            tr {
+                &:nth-of-type(odd) {
+                    background-color: #fff;
+                }
+
+                &:nth-of-type(even) {
+                    background-color: #eee;
+                }
+
+                td {
+                    padding: 5px 10px;
+                    overflow: hidden;
+                    text-align: center;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}

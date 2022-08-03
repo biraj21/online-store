@@ -1,0 +1,23 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/orders.css"]}) %>
+
+<%~ includeFile('partials/shop/nav', it) %>
+
+<div class="page">
+    <% if (it.orders.length === 0) { %>
+        <h2 style="margin-bottom: 0.5rem;">You have no orders!</h2>
+        <a href="/products" class="btn shop-now-btn">Shop now</a>
+    <% } else { %>
+        <h1>Your Orders</h1>
+
+        
+        <div class="orders">
+            <% for (const order of it.orders) { %>
+                <div class="card order">
+                    <h4><%= order.orderDate %></h4>
+                    <small class="grey-text">Order id: <%= order.id %></small>
+                    <a href="/orders/<%= order.id %>" class="btn btn--small">View Order</a>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
+</div>

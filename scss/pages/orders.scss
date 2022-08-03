@@ -1,0 +1,19 @@
+.orders {
+    margin-top: 1rem;
+    max-width: 768px;
+
+    .order {
+        margin-bottom: 1rem;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        // view order button
+        .btn {
+            display: block;
+            width: 75px;
+            margin-top: 0.5rem;
+        }
+    }
+}

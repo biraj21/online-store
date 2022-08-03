@@ -1,0 +1,44 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/order_details.css"] }) %>
+
+<%~ includeFile('partials/admin/nav', it) %>
+
+<div class="page">
+    <div class="order-summary card">
+        <h3>Order Summary</h3>
+        <p><b>Order id: </b> <%= it.order.id %></p>
+        <p><b>Ordered on: </b> <%= it.order.orderDate %></p>
+        <p><b>Orderd by: </b> <a href="/admin/users/<%= it.order.userId %>" class="link link--default"><%= it.order.userName %></a></p>
+
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% let totalAmount = 0; %>
+                    <% for (const item of it.order.items) { %>
+                        <tr>
+                            <td>
+                                <a href="/products/<%= item.id %>" class="link"><%= item.name %></a>
+                            </td>
+                            <td><%= item.quantity %></td>
+                            <td><%= item.price %></td>
+                        </tr>
+
+                        <% totalAmount += item.price * item.quantity; %>
+                    <% } %>
+
+                    <tr>
+                        <td colspan="2">Total Amount</td>
+                        <td><%= totalAmount %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/edit_product.css"] }) %>
+
+<%~ includeFile('partials/admin/nav', it) %>
+
+<div class="page edit-product">
+    <h2><%= it.editing ? "Edit": "Add" %> Product</h2>
+
+    <form
+        method="POST"
+        action="/admin/<%= it.editing ? `edit-product/${it.product.id}` : 'add-product' %>"
+        class="form"
+        novalidate
+    >
+        <div class="form__field">
+            <label>Name:</label>
+            <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                value="<%= it.product ? it.product.name : '' %>"
+                pattern="{5,}"
+                title="Name must be at least 5 characters long."
+                required
+            />
+        </div>
+
+        <div class="form__field">
+            <label>Price (&#8377;):</label>
+            <input
+                type="number"
+                step="0.01"
+                name="price"
+                placeholder="Price"
+                value="<%= it.product ? it.product.price : '' %>"
+                required
+            />
+        </div>
+
+        <div class="form__field">
+            <label>Description:</label>
+            <textarea
+                name="description"
+                placeholder="Description"
+                rows="4"
+                title="Description must be at least 20 characters long."
+                required
+            ><%= it.product ? it.product.description : '' %></textarea>
+        </div>
+
+        <div class="form__field">
+            <label>Image URL:</label>
+            <input
+                type="url"
+                name="imageUrl"
+                placeholder="Image URL"
+                value="<%= it.product ? it.product.imageUrl : '' %>"
+                required
+            />
+        </div>
+
+        <input type="hidden" name="_csrf" value="<%= it.csrfToken %>" />
+        <button type="submit" class="btn">Save</button>
+    </form>
+</div>

@@ -1,0 +1,58 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/cart.css"] }) %>
+
+<%~ includeFile('partials/shop/nav', it) %>
+
+<div class="page cart-page">
+    <div class="cart">
+        <% let totalAmount = 0; %>
+        <% if (it.cart.length === 0) { %>
+            <h2 style="margin-bottom: 0.5rem;">Your cart is empty!</h2>
+            <a href="/products" class="btn shop-now-btn">Shop now</a>
+        <% } else { %>
+            <% for (const item of it.cart) { %>
+                <div class="card cart-item">
+                    <div class="proper-image cart-item__image">
+                        <img src="<%= item.imageUrl %>" alt="<%= item.name %>" />
+                    </div>
+
+                    <div class="right">
+                        <h4>
+                            <a href="/products/<%= item.id %>" class="link"
+                                ><%= item.name %></a
+                            >
+                        </h4>
+                        <p>Quantity: <%= item.quantity %></p>
+                        <% totalAmount += item.price * item.quantity; %>
+                        <p>Total Price: &#8377;<%= item.price * item.quantity %></p>
+
+                        <form
+                            method="POST"
+                            action="/cart/remove-item/<%= item.id %>"
+                            style="font-size: 0.7rem"
+                        >
+                            <input type="hidden" name="_csrf" value="<%= it.csrfToken %>">
+                            <button type="submit" class="btn btn--small btn--red">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+
+    <% if (it.cart.length > 0) { %>
+        <div class="card cart-summary">
+            <h3>Cart Summary</h3>
+    
+            <p><span>Price:</span> <span>&#8377;<%= totalAmount %></span></p>
+            <p><span>Discount:</span> <span>-&#8377;0</span></p>
+            <p><span>Delivery</span> <span>Charges: FREE</span></p>
+            <hr>
+            <p><span>Total Amount:</span> <span>&#8377;<%= totalAmount %></span></p>
+    
+            <form method="POST" action="/orders">
+                <input type="hidden" name="_csrf" value="<%= it.csrfToken %>">
+                <button type="submit" class="btn confirm-order-btn">Confirm Order</button>
+            </form>
+        </div>
+    <% }%>
+</div>

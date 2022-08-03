@@ -1,0 +1,39 @@
+<% layout("layout", { pageTitle: it.pageTitle }) %>
+
+<%~ includeFile('partials/admin/nav', it) %>
+
+<div class="page">
+    <% if (it.orders.length === 0) { %>
+        <h2>You haven't received any orders yet!</h2>
+    <% } else { %>
+        <h1 style="margin-bottom: 1rem;">Orders</h1>
+
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order Id</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Customer Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for (const order of it.orders) { %>
+                        <tr>
+                            <td><%= order.id %></td>
+                            <td><%= order.orderDate %></td>
+                            <td><a href="/admin/users/<%= order.userId %>" class="link"><%= order.userName%></a></td>
+                            <td><%= order.userEmail %></td>
+                            <td>
+                                <a href="/admin/orders/<%= order.id %>" class="btn btn--small">View Order</a>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+</div>

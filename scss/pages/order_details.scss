@@ -1,0 +1,15 @@
+.order-summary {
+    p {
+        color: var(--grey);
+        font-size: 0.9rem;
+    }
+
+    .table {
+        margin-top: 1rem;
+
+        tbody tr:last-of-type {
+            background-color: #111;
+            color: #fff;
+        }
+    }
+}

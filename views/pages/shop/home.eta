@@ -1,0 +1,7 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/cart.css"] }) %>
+
+<%~ includeFile('partials/shop/nav', it) %>
+
+<div class="page">
+    Shop Home
+</div>

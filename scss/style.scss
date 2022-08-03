@@ -1,0 +1,113 @@
+@use "./components/button";
+@use "./components/card";
+@use "./components/flash";
+@use "./components/form";
+@use "./components/proper-image";
+@use "./components/table";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #005b47;
+    --red: #dc3545;
+    --grey: #676767;
+    --default-font: "Nunito", sans-serif;
+
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--default-font);
+    background-color: #f1f3f6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+button,
+input,
+textarea {
+    font-family: var(--default-font);
+}
+
+.main-nav {
+    $gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding: $gap;
+    background-color: var(--primary-color);
+    position: sticky;
+    top: 0;
+
+    button {
+        all: unset;
+    }
+
+    > a,
+    .auth-links a,
+    .auth-links button {
+        display: inline-block;
+        margin-left: $gap;
+        padding: 4px 10px;
+        border-radius: 5px;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        &.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: yellow;
+        }
+    }
+
+    .auth-links {
+        margin-left: auto;
+    }
+}
+
+.page {
+    padding: 1rem;
+
+    &__actions {
+        display: flex;
+        margin-bottom: 1rem;
+
+        > :last-child {
+            margin-left: auto;
+        }
+    }
+}
+
+.grey-text {
+    color: var(--grey);
+}
+
+.link {
+    &--default,
+    &:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+    }
+}
+
+.center-text {
+    text-align: center;
+}

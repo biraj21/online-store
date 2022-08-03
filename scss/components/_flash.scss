@@ -1,0 +1,84 @@
+.flash {
+    $_error-bg: #ffa7ae;
+    $_error-text: #740c16;
+    $_success-bg: #d4edda;
+    $_success-text: #0e6222;
+
+    max-width: 85%;
+    padding: 0.5rem 0.8rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 1.5rem;
+    right: 0;
+    z-index: 10000;
+    transform: translateX(100%);
+    animation: flash-slide-in 700ms ease forwards;
+
+    &--error {
+        background-color: $_error-bg;
+        color: $_error-text;
+    }
+
+    &--success {
+        background-color: $_success-bg;
+        color: $_success-text;
+    }
+
+    &--closed {
+        animation: flash-slide-out 700ms ease-in forwards;
+    }
+
+    &__icon {
+        width: 24px;
+    }
+
+    &__msg {
+        margin-left: 0.7rem;
+        margin-right: 2rem;
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+
+    &__close {
+        all: unset;
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    @keyframes flash-slide-in {
+        0% {
+            transform: translateX(100%);
+        }
+
+        40% {
+            transform: translateX(-10%);
+        }
+
+        70% {
+            transform: translateX(0%);
+        }
+
+        100% {
+            transform: translateX(-1rem);
+        }
+    }
+
+    @keyframes flash-slide-out {
+        0% {
+            transform: translateX(-1rem);
+        }
+
+        30% {
+            transform: translateX(-10%);
+        }
+
+        60% {
+            transform: translateX(100%);
+        }
+    }
+}

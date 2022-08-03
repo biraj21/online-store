@@ -1,0 +1,26 @@
+<nav class="main-nav">
+    <a href="/" class="<%= it.route == '/' ? 'active' : '' %>">Home</a>
+    <a href="/products" class="<%= it.route == '/products' ? 'active' : '' %>">Products</a>
+
+    <% if (it.isLoggedIn) { %>
+        <% if (it.userType === "admin") { %>
+            <a href="/admin" class="<%= it.route == '/admin' ? 'active' : '' %>">Admin</a>
+        <% } else { %>
+            <a href="/cart" class="<%= it.route == '/cart' ? 'active' : '' %>">Cart</a>
+            <a href="/orders" class="<%= it.route == '/orders' ? 'active' : '' %>">Orders</a>
+            <a href="/checkout" class="<%= it.route == '/checkout' ? 'active' : '' %>">Checkout</a>
+        <% } %>
+    <% } %>
+
+    <div class="auth-links">
+        <% if (it.isLoggedIn) { %>
+            <form method="POST" action="/logout">
+                <input type="hidden" name="_csrf" value="<%= it.csrfToken %>">
+                <button type="submit">Logout</button>
+            </form>
+        <% } else { %>    
+            <a href="/login" class="<%= it.route == '/login' ? 'active' : '' %>">Login</a>
+            <a href="/register" class="<%= it.route == '/register' ? 'active' : '' %>">Create Account</a>
+        <% } %>
+    </div>
+</nav>

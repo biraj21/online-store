@@ -1,0 +1,36 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/products.css"] }) %>
+
+<%~ includeFile('partials/admin/nav', it) %>
+
+<div class="page">
+    <div class="page__actions">
+        <a href="/admin/add-product" class="btn">&plus; Add Products</a>
+    </div>
+
+    <div class="products">
+        <% for (const product of it.products) { %>
+            <div class="card product">
+                <div class="proper-image product__image">
+                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>" />
+                </div>
+                <h4 class="product__name">
+                    <a href="/products/<%= product.id %>" class="link"><%= product.name %></a>
+                </h4>
+                <p class="product__description"><%= product.description.slice(0, 60) + "..." %></p>
+                <p class="product__price">&#8377;<%= product.price %></p>
+
+                <div class="product__actions">
+                    <a class="btn btn--small" href="/admin/edit-product/<%= product.id %>">Edit</a>
+                    <form
+                        method="POST"
+                        action="/admin/delete-product/<%= product.id %>"
+                        style="font-size: 0.7rem"
+                    >
+                        <input type="hidden" name="_csrf" value="<%= it.csrfToken %>" />
+                        <button type="submit" class="btn btn--small">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

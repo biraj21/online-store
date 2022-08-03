@@ -1,0 +1,39 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/product_details.css"] }) %>
+
+<%~ includeFile('partials/shop/nav', it) %>
+
+<div class="page">
+    <div class="product-details">
+        <h3><%= it.product.name %></h3>
+        <div class="proper-image">
+            <img
+                src="<%= it.product.imageUrl %>"
+                alt="<%= it.product.name %>"
+            />
+        </div>
+
+        <p class="price">&#8377;<%= it.product.price %></p>
+
+        <div class="btn-wrapper">
+            <% if (it.product.addedToCart) { %>
+                <a class="btn" href="/cart">Go to cart</a>
+            <% } else if (it.userType === "admin") { %>
+                <a class="btn" href="/admin/edit-product/<%= it.product.id %>">Edit</a>
+            <% } else { %>
+                <form method="POST" action="/cart/<%= it.product.id %>" class="form">
+                    <div>
+                        <label>Quantity: </label>
+                        <input type="number" name="quantity" value="1" />
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%= it.csrfToken %>">
+                    <button type="submit" class="btn">Add to cart</button>
+                </form>
+            <% } %>
+        </div>
+
+        <div class="description">
+            <h3>About this item</h3>
+            <p><%= it.product.description %></p>
+        </div>
+    </div>
+</div>

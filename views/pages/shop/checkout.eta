@@ -1,0 +1,7 @@
+<% layout("layout", { pageTitle: it.pageTitle }) %>
+
+<%~ includeFile('partials/shop/nav', it) %>
+
+<div class="page">
+    Checkout
+</div>

@@ -1,0 +1,18 @@
+<nav class="main-nav">
+    <a href="/admin" class="<%= it.route == '/admin' ? 'active' : '' %>">Home</a>
+    <a href="/admin/products" class="<%= it.route == '/admin/products' ? 'active' : '' %>">Products</a>
+    <a href="/admin/orders" class="<%= it.route == '/admin/orders' ? 'active' : '' %>">Orders</a>
+    <a href="/" class="<%= it.route == '/' ? 'active' : '' %>">Website</a>
+
+    <div class="auth-links">
+        <% if (it.isLoggedIn) { %>
+            <form method="POST" action="/logout">
+                <input type="hidden" name="_csrf" value="<%= it.csrfToken %>">
+                <button type="submit">Logout</button>
+            </form>
+        <% } else { %>    
+            <a href="/login" class="<%= it.route == '/login' ? 'active' : '' %>">Login</a>
+            <a href="/register" class="<%= it.route == '/register' ? 'active' : '' %>">Create Account</a>
+        <% } %>
+    </div>
+</nav>

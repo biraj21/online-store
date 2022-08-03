@@ -1,0 +1,7 @@
+<% layout("layout", { pageTitle: it.pageTitle, stylesheets: ["pages/edit_product.css"] }) %>
+
+<%~ includeFile('partials/admin/nav', it) %>
+
+<div class="page">
+    Admin Home
+</div>

@@ -1,0 +1,40 @@
+<% layout('layout', { pageTitle: it.pageTitle, stylesheets: ["pages/auth.css"] }) %>
+
+<%~ includeFile('partials/shop/nav', it) %>
+
+<div class="page auth-page">
+    <h1>Login</h1>
+
+    <form method="POST" action="/login" class="form">
+        <div class="form__field">
+            <label>Email:</label>
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value="<%= it.defaults.email ? it.defaults.email : '' %>"
+                required
+            />
+        </div>
+
+        <div class="form__field">
+            <label>Password:</label>
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value="<%= it.defaults.password ? it.defaults.password : '' %>"
+                pattern="\S{8,}"
+                title="Password must not contain any spaces and must be at least 8 characters long."
+                required
+            />
+        </div>
+
+        <input type="hidden" name="_csrf" value="<%= it.csrfToken %>">
+        <button type="submit" class="btn">Login</button>
+
+        <div class="center-text" style="margin-top: 1rem;">
+            <a href="/forgot-password" class="link link--default">Forgot password?</a>
+        </div>
+    </form>
+</div>

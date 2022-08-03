@@ -1,0 +1,49 @@
+.product-details {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: white;
+
+    .proper-image {
+        width: 400px;
+        height: 400px;
+        margin: 1rem auto;
+    }
+
+    .price {
+        font-size: 1.1rem;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .btn-wrapper {
+        margin: 1rem;
+        text-align: center;
+
+        form {
+            div {
+                margin-bottom: 0.5rem;
+            }
+
+            label {
+                display: inline;
+            }
+
+            input[name="quantity"] {
+                display: inline-block;
+                height: 100%;
+                width: 64px;
+                margin-left: 0.4rem;
+            }
+        }
+    }
+
+    @media screen and (max-width: 420px) {
+        .proper-image {
+            width: 85vw;
+            height: 85vw;
+            max-width: 100%;
+            max-height: 360px;
+        }
+    }
+}
