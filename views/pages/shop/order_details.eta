@@ -39,5 +39,9 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="btn-wrapper">
+            <a href="/orders/invoice/<%= it.order.id %>" class="btn">Invoice</a>
+        </div>
     </div>
 </div>

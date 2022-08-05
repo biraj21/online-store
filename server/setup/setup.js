@@ -37,6 +37,11 @@ try {
         "INSERT INTO `product` (name, price, description, imageUrl, userId) VALUES ('Classroom of the Elite (Light Novel) Vol. 1', 459.0, 'Students of the prestigious Tokyo Metropolitan Advanced Nurturing High School are given remarkable freedom—if they can win, barter, or save enough points to work their way up the ranks! Ayanokoji Kiyotaka has landed at the bottom in the scorned Class D, where he meets Horikita Suzune, who’s determined to rise up the ladder to Class A. Can they beat the system in a school where cutthroat competition is the name of the game?', 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1540974678l/41085104.jpg', 1)"
     );
 
+    const imagesDir = "./uploads/images";
+    if (!fs.existsSync(imagesDir)) {
+        fs.mkdirSync(imagesDir, { recursive: true });
+    }
+
     console.log("Setup complete.");
 } catch (err) {
     console.error("Error:", err.message);

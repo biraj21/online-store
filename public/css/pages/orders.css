@@ -1,1 +1,1 @@
-.orders{margin-top:1rem;max-width:768px}.orders .order{margin-bottom:1rem}.orders .order:last-of-type{margin-bottom:0}.orders .order .btn{display:block;width:75px;margin-top:.5rem}
+.orders{margin-top:1rem;max-width:768px}.orders .order{margin-bottom:1rem}.orders .order:last-of-type{margin-bottom:0}.orders .order__actions{margin-top:.4rem}.orders .order__actions .btn{display:inline-block;margin-right:4px}.orders .order__actions .btn:last-child{margin-right:0}

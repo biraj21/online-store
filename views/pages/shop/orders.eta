@@ -15,7 +15,10 @@
                 <div class="card order">
                     <h4><%= order.orderDate %></h4>
                     <small class="grey-text">Order id: <%= order.id %></small>
-                    <a href="/orders/<%= order.id %>" class="btn btn--small">View Order</a>
+                    <div class="order__actions">
+                        <a href="/orders/<%= order.id %>" class="btn btn--small">View Order</a>
+                        <a href="/orders/invoice/<%= order.id %>" class="btn btn--small">Invoice</a>
+                    </div>
                 </div>
             <% } %>
         </div>

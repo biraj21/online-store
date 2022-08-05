@@ -9,11 +9,17 @@
             margin-bottom: 0;
         }
 
-        // view order button
-        .btn {
-            display: block;
-            width: 75px;
-            margin-top: 0.5rem;
+        &__actions {
+            margin-top: 0.4rem;
+
+            .btn {
+                display: inline-block;
+                margin-right: 4px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
         }
     }
 }

@@ -55,35 +55,13 @@ export default class Order {
             conn = await dbPool.getConnection();
             const order = (
                 await conn.query(
-                    `SELECT o.id, o.orderDate, o.userId, u.name userName, u.email userEmail
+                    `SELECT o.*, u.name userName, u.email userEmail
                     FROM \`order\` o
                     JOIN \`user\` u
                         ON o.userId = u.id
                     WHERE o.id = ?`,
                     [id]
                 )
-            )[0];
-
-            if (!order) return order;
-
-            order.items = await OrderItem.getAllByOrderId(id);
-            return order;
-        } catch (err) {
-            throw err;
-        } finally {
-            if (conn) conn.release();
-        }
-    }
-
-    static async getByIdAndUser(id, userId) {
-        let conn;
-        try {
-            conn = await dbPool.getConnection();
-            const order = (
-                await conn.query("SELECT id, orderDate FROM `order` WHERE id = ? AND userId = ?", [
-                    id,
-                    userId,
-                ])
             )[0];
 
             if (!order) return order;
