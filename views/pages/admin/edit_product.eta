@@ -3,13 +3,13 @@
 <%~ includeFile('partials/admin/nav', it) %>
 
 <div class="page edit-product">
-    <h2><%= it.editing ? "Edit": "Add" %> Product</h2>
+    <h2><%= it.editing ? "Edit" : "Add" %> Product</h2>
 
     <form
         method="POST"
-        action="/admin/<%= it.editing ? `edit-product/${it.product.id}` : 'add-product' %>"
+        action="/admin/<%= it.editing ? `edit-product/${it.product.id}` : 'add-product' %>?_csrf=<%= it.csrfToken %>"
         class="form"
-        novalidate
+        enctype="multipart/form-data"
     >
         <div class="form__field">
             <label>Name:</label>
@@ -18,7 +18,7 @@
                 name="name"
                 placeholder="Name"
                 value="<%= it.product ? it.product.name : '' %>"
-                pattern="{5,}"
+                pattern=".{5,}"
                 title="Name must be at least 5 characters long."
                 required
             />
@@ -37,6 +37,16 @@
         </div>
 
         <div class="form__field">
+            <label>Image:</label>
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+                <% if (!it.editing) { %> required <% } %>
+            />
+        </div>
+
+        <div class="form__field">
             <label>Description:</label>
             <textarea
                 name="description"
@@ -47,18 +57,6 @@
             ><%= it.product ? it.product.description : '' %></textarea>
         </div>
 
-        <div class="form__field">
-            <label>Image URL:</label>
-            <input
-                type="url"
-                name="imageUrl"
-                placeholder="Image URL"
-                value="<%= it.product ? it.product.imageUrl : '' %>"
-                required
-            />
-        </div>
-
-        <input type="hidden" name="_csrf" value="<%= it.csrfToken %>" />
         <button type="submit" class="btn">Save</button>
     </form>
 </div>

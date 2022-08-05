@@ -1,9 +1,27 @@
+import fs from "node:fs/promises";
 import express from "express";
+import multer from "multer";
 import validator from "validator";
 import Order from "../models/order.js";
 import Product from "../models/product.js";
 import { ValidationError } from "../utils/error.js";
 import { splitDatetime, validateRequestBody } from "../utils/helpers.js";
+
+const storage = multer.diskStorage({
+    destination: "./uploads/images",
+    filename: (req, file, callback) => {
+        callback(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+
+const fileFilter = (req, file, callback) => {
+    const imageMimetypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (imageMimetypes.includes(file.mimetype)) {
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
+};
 
 // URL: /admin/...
 
@@ -45,44 +63,57 @@ router.get("/add-product", (req, res, next) => {
     });
 });
 
-router.post("/add-product", async (req, res, next) => {
-    try {
-        validateRequestBody(req, ["name", "price", "description", "imageUrl"]);
+router.post(
+    "/add-product",
+    multer({ storage, fileFilter }).single("image"),
+    async (req, res, next) => {
+        try {
+            if (!req.file) {
+                throw new ValidationError("Please upload a valid image!");
+            }
 
-        let { name, price, description, imageUrl } = req.body;
-        name = name.trim();
-        price = price.trim();
-        description = description.trim();
-        imageUrl = imageUrl.trim();
+            validateRequestBody(req, ["name", "price", "description"]);
 
-        if (name.length < 5) {
-            throw new ValidationError("Enter a valid name!");
-        } else if (!validator.isNumeric(price) || Number(price) < 0) {
-            throw new ValidationError("Enter a valid price!");
-        } else if (description.length < 20) {
-            throw new ValidationError("Enter a valid description!");
-        } else if (!validator.isURL(imageUrl, { require_protocol: true })) {
-            throw new ValidationError("Enter a valid image URL!");
-        }
+            let { name, price, description } = req.body;
+            name = name.trim();
+            price = price.trim();
+            description = description.trim();
 
-        req.flash.set("success", "Product was successfully added!");
-        await Product.create({ name, price, description, imageUrl, userId: req.session.user.id });
-        res.redirect("/admin/products");
-    } catch (err) {
-        if (err instanceof ValidationError) {
-            res.status(422).render("pages/admin/edit_product", {
-                route: "/admin/products",
-                pageTitle: "Admin | Add Product",
-                errorMsg: err.message,
-                product: req.body,
+            if (name.length < 5) {
+                throw new ValidationError("Enter a valid name!");
+            } else if (!validator.isNumeric(price) || Number(price) < 0) {
+                throw new ValidationError("Enter a valid price!");
+            } else if (description.length < 20) {
+                throw new ValidationError("Enter a valid description!");
+            }
+
+            const imageUrl = "/" + req.file.path;
+
+            req.flash.set("success", "Product was successfully added!");
+            await Product.create({
+                name,
+                price,
+                description,
+                imageUrl,
+                userId: req.session.user.id,
             });
+            res.redirect("/admin/products");
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                res.status(422).render("pages/admin/edit_product", {
+                    route: "/admin/products",
+                    pageTitle: "Admin | Add Product",
+                    errorMsg: err.message,
+                    product: req.body,
+                });
 
-            return;
+                return;
+            }
+
+            next(err);
         }
-
-        next(err);
     }
-});
+);
 
 router.get("/edit-product/:productId", async (req, res, next) => {
     try {
@@ -103,50 +134,61 @@ router.get("/edit-product/:productId", async (req, res, next) => {
     }
 });
 
-router.post("/edit-product/:productId", async (req, res, next) => {
-    const { productId } = req.params;
+router.post(
+    "/edit-product/:productId",
+    multer({ storage, fileFilter }).single("image"),
+    async (req, res, next) => {
+        const { productId } = req.params;
 
-    try {
-        if (!(await Product.existsId(productId))) {
-            next();
-            return;
+        try {
+            const product = await Product.getById(productId);
+            if (!product) {
+                next();
+                return;
+            }
+
+            validateRequestBody(req, ["name", "price", "description"]);
+
+            let { name, price, description } = req.body;
+            name = name.trim();
+            price = price.trim();
+            description = description.trim();
+
+            if (name.length < 5) {
+                throw new ValidationError("Enter a valid name!");
+            } else if (!validator.isNumeric(price) || Number(price) < 0) {
+                throw new ValidationError("Enter a valid price!");
+            } else if (description.length < 20) {
+                throw new ValidationError("Enter a valid description!");
+            }
+
+            let { imageUrl } = product;
+            const image = req.file;
+            if (image) {
+                await fs.unlink("." + imageUrl);
+                imageUrl = "/" + image.path;
+            }
+
+            await Product.updateById({ name, price, description, imageUrl }, productId);
+            req.flash.set("success", "Product was successfully updated!");
+            res.redirect("/admin/products");
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                res.status(422).render("pages/admin/edit_product", {
+                    route: "/admin/products",
+                    pageTitle: "Admin | Edit Product",
+                    editing: true,
+                    errorMsg: err.message,
+                    product: { id: productId, ...req.body },
+                });
+
+                return;
+            }
+
+            next(err);
         }
-
-        let { name, price, description, imageUrl } = req.body;
-        name = name.trim();
-        price = price.trim();
-        description = description.trim();
-        imageUrl = imageUrl.trim();
-
-        if (name.length < 5) {
-            throw new ValidationError("Enter a valid name!");
-        } else if (!validator.isNumeric(price) || Number(price) < 0) {
-            throw new ValidationError("Enter a valid price!");
-        } else if (description.length < 20) {
-            throw new ValidationError("Enter a valid description!");
-        } else if (!validator.isURL(imageUrl, { require_protocol: true })) {
-            throw new ValidationError("Enter a valid image URL!");
-        }
-
-        await Product.updateById({ name, price, description, imageUrl }, productId);
-        req.flash.set("success", "Product was successfully updated!");
-        res.redirect("/admin/products");
-    } catch (err) {
-        if (err instanceof ValidationError) {
-            res.status(422).render("pages/admin/edit_product", {
-                route: "/admin/products",
-                pageTitle: "Admin | Edit Product",
-                editing: true,
-                errorMsg: err.message,
-                product: { id: productId, ...req.body },
-            });
-
-            return;
-        }
-
-        next(err);
     }
-});
+);
 
 router.post("/delete-product/:productId", async (req, res, next) => {
     try {

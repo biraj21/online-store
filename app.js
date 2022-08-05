@@ -25,6 +25,7 @@ app.engine("eta", renderFile);
 app.set("view engine", "eta");
 
 app.use(express.static("./public"));
+app.use("/uploads", express.static("./uploads"));
 app.use(cookieParser());
 app.use(
     session({
